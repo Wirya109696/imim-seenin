@@ -7,11 +7,13 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use \Illuminate\Http\Response;
+use App\Exports\ListmovExport;
+use App\Imports\ListmovImport;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Cviebrock\EloquentSluggable\Tests\Models\Post;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
-
-
 
 class DashboardListController extends Controller
 {
@@ -25,6 +27,11 @@ class DashboardListController extends Controller
         return view ('dashboard.list.index', [
             'lists' => Listmov::where('user_id', auth()->user()->id)->get()
         ]);
+
+        // $data = Listmov::where('user_id', auth()->user()->id)->get();
+
+        return view('dashboard.list.index', compact('items'));
+        // return response()->json($data);
     }
 
     /**
@@ -77,15 +84,10 @@ class DashboardListController extends Controller
     public function show($lists)
     {
 
-        // if($lists->author->id !== auth()->user()->id) {
-        //     abort(403);
-        // }
-
         return view ('dashboard.list.show', [
             'lists' => Listmov::where('slug', $lists)->first()
             ]);
-        // return (Listmov::where('slug', $lists)->first());
-        // return $list;
+
     }
 
     /**
@@ -162,4 +164,70 @@ class DashboardListController extends Controller
         $slug = SlugService::createSlug(Listmov::class, 'slug' , $request->slug);
         return response()->json(['slug' => $slug]);
     }
+
+    public function export(){
+
+        $user = Auth::user();
+        $filename = 'imip_info_' . strtolower($user->name) . '.xlsx';
+
+        return Excel::download(new ListmovExport, $filename);
+        // return Excel::download(new ListmovExport($list),'listmov.xlsx');
+    }
+
+    public function import(Request $request){
+
+        $file = $request->file('file');
+
+        $namaFile = $file->getClientOriginalName();
+        $file->move('datalist', $namaFile);
+
+        Excel::import(new Listmovimport, public_path('/datalist/'.$namaFile));
+        return redirect('/dashboard/list')->with('success','File Berhasil Import');
+
+
+        // Excel::import(new ListmovImport, $file); // Ganti YourImportClass dengan class import Anda
+
+        // return redirect()->route('importlistmov')
+        //     ->with('success', 'Data berhasil diimpor.');
+    }
+
+    // public function export()
+    // {
+    //     // Get data to export (replace this with your own data retrieval logic)
+    //     $data = [
+    //         ['Name', 'Email'],
+    //         ['John Doe', 'john@example.com'],
+    //         ['Jane Doe', 'jane@example.com'],
+    //     ];
+
+    //     // Define Excel file name
+    //     $fileName = 'exported_data.xlsx';
+
+    //     // Export data using Maatwebsite\Excel\Facades\Excel
+    //     Excel::create($fileName, function ($excel) use ($data) {
+    //         $excel->sheet('Sheet 1', function ($sheet) use ($data) {
+    //             $sheet->fromArray($data, null, 'A1', false, false);
+    //         });
+    //     })->export('xlsx');
+    // }
+
+    // public function import(Request $request)
+    // {
+    //     // Handle the uploaded file
+    //     $file = $request->file('file');
+    //     $path = $file->getRealPath();
+
+    //     // Import data using Maatwebsite\Excel\Facades\Excel
+    //     $data = Excel::load($path, function ($reader) {
+    //     })->get();
+
+    //     // Process the imported data (replace this with your own logic)
+    //     foreach ($data as $row) {
+    //         // Process each row
+    //         // $row['column_name']
+    //     }
+
+    //     return redirect()->back()->with('success', 'Data imported successfully.');
+    // }
+
 }

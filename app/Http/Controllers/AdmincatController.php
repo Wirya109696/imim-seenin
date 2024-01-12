@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\IsAdmin;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,14 @@ class AdmincatController extends Controller
      */
     public function index()
     {
-        return view('dashboard.categories.index');
+        // if(auth()->user()->hasRole("admin")){
+        // }else{
+        // }
+        $this->authorize("admin", IsAdmin::class);
+
+        return view('dashboard.categories.index', [
+            'categories'=> Category::all()
+        ]);
     }
 
     /**

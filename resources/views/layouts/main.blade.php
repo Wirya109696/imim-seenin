@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     {{-- Sign In Style --}}
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://bossanova.uk/jsuites/v4/jsuites.css" type="text/css" />
+    <script src="https://bossanova.uk/jsuites/v4/jsuites.js"></script>
   </head>
   <body>
     @include('partials.navbar')

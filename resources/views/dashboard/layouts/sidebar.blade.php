@@ -20,23 +20,25 @@
           </li>
 
         <hr class="my-3">
-
+        @can('admin')
         <h6 class="sidebar-heading d-flex justify-content-between align-item-center px-3 mt-2 mb-1 text-muted">
             Admin Category
         </h6>
         <ul class="nav flex-column mb-auto">
-          <li class="nav-item">
+        <li class="nav-item">
             <a class="nav-link d-flex align-items-center gap-2 {{ Request::is('dashboard/categories*') ? 'active' : '' }}" href="/dashboard/categories">
-              <svg class="bi"><use xlink:href="#gear-wide-connected"/></svg>
-              List Category
+            <svg class="bi"><use xlink:href="#gear-wide-connected"/></svg>
+            List Category
             </a>
-          </li>
+        </li>
+        @endcan
+
           <li class="nav-item">
             {{-- <a class="nav-link d-flex align-items-center gap-2" href="/logout">
               <svg class="bi"><use xlink:href="#door-closed"/></svg>
               Logout
             </a> --}}
-            <form action="/list" method="get">
+            <form action="/logout" method="post">
               @csrf
               <button type="submit" class="nav-link d-flex align-items-center gap-2">
                 <svg class="bi"><use xlink:href="#door-closed"/></svg>

@@ -40,9 +40,21 @@ Route::get('/dashboard', function(){
 
 Route::resource('/dashboard/list', DashboardListController::class)->middleware('auth');
 
-Route::resource('/dashboard/categories', AdmincatController::class)->except('show')->middleware('auth');
+Route::resource('/dashboard/categories', AdmincatController::class)->except('show')->middleware('admin');
 
 Route::get('/dashboard/list/cekSlug', [DashboardListController::class,'cekSlug'])->middleware('auth');
+
+Route::get('/export', [DashboardListController::class, 'export'])->name('export');
+Route::post('/import', [DashboardListController::class, 'import'])->name('import');
+
+// Route::get('/exportlistmov', [DashboardListController::class, 'listmovexport'])->middleware('auth')->name('exportlistmov');
+
+// // Route::get('/importlistmov', [DashboardListController::class, 'index'])->name('importlistmov');
+// Route::post('/importlistmov', [DashboardListController::class, 'listmovimport'])->middleware('auth')->name('importlistmov');
+
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/exportlistmov', [DashboardListController::class, 'listmovexport']);
+// });
 
 // Route::get('/home', function () {
 //     return view('home', [

@@ -42,7 +42,7 @@
       </div>
 
       <div class="mb-3">
-        <label for="image" class="form-label">Upload Gambar Film</label>
+        <label for="image" class="form-label">Upload Gambar Info</label>
         <input type="hidden" name="oldImage" value="{{ $list->image }}">
         @if ($list->image)
         <img src="{{ asset('storage/' . $list->image) }}" class="img-preview img-fluid mb-3 col-sm-5 d-block">

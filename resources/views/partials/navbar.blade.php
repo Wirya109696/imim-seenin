@@ -56,7 +56,7 @@
           </li>
         @else
             <li class="nav-item">
-                <a href="/login" class="nav-link {{($active === "login") ? 'active' : ''}}" ><i class="bi bi-box-arrow-in-right"></i> Login</a>
+                <a href="/login" class="nav-link {{($active === "login") ? 'active' : ''}}" style="-webkit-text-fill-color: white"><i class="bi bi-box-arrow-in-right text-white"></i> Login</a>
             </li>
         @endauth
         </ul>

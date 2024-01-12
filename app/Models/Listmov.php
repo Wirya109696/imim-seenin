@@ -16,6 +16,12 @@ class Listmov extends Model
 
     protected $with = ['category', 'author'];
 
+    // protected $table = "listmov";
+    // protected $primaryKey = ["id"];
+
+    // protected $fillable = [
+    //     'category_id', 'user_id', 'title', 'slug', 'excerpt', 'image', 'body', 'published_at', 'created_at', 'updated_at'];
+
     public function scopeFilter($query, array $filters){
         $query->when($filters['search'] ?? false, function($query, $search){
             return $query
